@@ -1,0 +1,100 @@
+#!/bin/bash
+
+SEPARATOR=" ------------------------------------------------------------------------------"
+TITLE="
+\t███╗   ██╗ ██████╗ ██╗   ██╗    ██╗   ██╗████████╗██╗██╗
+\t████╗  ██║██╔════╝ ██║   ██║    ██║   ██║╚══██╔══╝██║██║
+\t██╔██╗ ██║██║  ███╗██║   ██║    ██║   ██║   ██║   ██║██║
+\t██║╚██╗██║██║   ██║██║   ██║    ██║   ██║   ██║   ██║██║
+\t██║ ╚████║╚██████╔╝╚██████╔╝    ╚██████╔╝   ██║   ██║███████╗
+\t╚═╝  ╚═══╝ ╚═════╝  ╚═════╝      ╚═════╝    ╚═╝   ╚═╝╚══════╝
+$SEPARATOR\t\t\t[ Ultimate Management Tool ]\n$SEPARATOR"
+CPATH="/Users/nguyen/Repository/"
+BPATH="/Volumes/Extended/Repository"
+
+mainMenu () {
+printf "$TITLE\n\n"
+    printf "[ Repository Backup ]\n"
+    echo '------------------------'
+    echo '1. Source Directory'
+    echo '2. Backup Directory'
+    echo '3. Deploy Backup Method'
+    echo '4. Exit Program'
+    echo '------------------------'
+    printf "\n> "
+    read -r act
+}
+
+checkStatement () {
+    if [ $act == "1" ]; then
+        reset
+        sourceDir
+    elif [ $act == "2" ]; then
+        reset
+        backupDir
+    elif [ $act == "3" ]; then
+        printf "\n\n"
+        deployBackup
+    elif [ $act == "4" ]; then
+        reset
+    else
+        printf "\n\nNot a valid selection!"
+        sleep 2
+        reset
+    fi
+}
+
+sourceDir () {
+    printf "Source Path: $CPATH\nDo you wish to change the path (Y/N)?\n> "
+    read -r aPath
+    if [ $aPath == "Y" ]; then
+        reset
+        echo 'Enter a new path to the repository'
+        printf "> "
+        read -r newSPath
+        CPATH=$newSPath
+        reset
+    else
+        reset
+    fi
+}
+
+backupDir () {
+    printf "Backup Path: $CPATH\nDo you wish to change the path (Y/N)?\n> "
+    read -r aPath
+    if [ $aPath == "Y" ]; then
+        reset
+        echo 'Enter a new path to the repository'
+        printf "> "
+        read -r newBPath
+        BPATH=$newBPath
+        reset
+    else
+        reset
+    fi
+}
+
+deployBackup () {
+    printf "Source repository: $CPATH\nBackup Repository: $BPATH\n\nStart file transfer (Y/N)?\n>"
+    read -r aDeploy
+    if [ $aDeploy == "Y" ]; then
+        printf "\n"
+        sudo rsync -vaE --progress $CPATH $BPATH
+        echo "Completed file transfer!"
+        sleep 5
+        reset
+    else
+        printf "\nOperation Canceled!"
+        sleep 2
+        reset
+    fi
+
+}
+
+reset
+
+$SHELL -c 'screen -X caption always "BACKUP UTILITY $STY"'
+until [ "$act" == "4" ]; do
+    mainMenu
+    checkStatement
+done

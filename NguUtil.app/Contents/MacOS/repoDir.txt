@@ -1,0 +1,4 @@
+/Users/nguyen/Projects/
+/Users/nguyen/School/
+/Users/nguyen/Work/
+/Users/nguyen/Sites/

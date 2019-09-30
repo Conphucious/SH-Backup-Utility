@@ -1,0 +1,7 @@
+#!/bin/bash
+
+#cd Desktop
+cd "$(dirname "$0")"
+printf '\e[8;25;79t';
+screen -S default ./Backup
+#$SHELL -c 'screen -X caption always "$STY"'

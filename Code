@@ -1,0 +1,33 @@
+#!/bin/bash
+
+cd "$(dirname "$0")"
+
+LISTFILE="./repoDir.txt"
+
+
+#while read FILE
+#   do echo $FILE
+#done < $LISTFILE
+
+
+declare -a result
+result=( $(wc < ./repoDir.txt) )
+lines=${result[0]}
+words=${result[1]}
+characters=${result[2]}
+echo "Lines: $lines, Words: $words, Characters: $characters"
+
+names="hello 
+I am
+the
+bomb"
+SAVEIFS=$IFS
+
+IFS=$'\n'
+names=($names)
+
+IFS=$SAVEIFS
+for (( i=0; i<${#names[@]}; i++ ))
+do
+    echo "$i: ${names[$i]}"
+done
